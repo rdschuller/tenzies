@@ -16,11 +16,13 @@ export default function App() {
   
   const [dieArr, setDieArr] = useState(allNewDice())
   const [tenzies, setTenzies] = useState(false)
+  const [numRolls, setNumRolls] = useState(0)
 
   function rollDice() {
     if (tenzies) {
       setDieArr(allNewDice());
       setTenzies(false)
+      setNumRolls(0)
     }
     setDieArr(oldDice => oldDice.map(die => {
         return die.isHeld === false ?
@@ -31,7 +33,11 @@ export default function App() {
             } :
             die
     }))
+    if(!tenzies){
+      setNumRolls(prevNum => prevNum + 1)
+    }
 }
+
 
   function holdDice(id) {
     setDieArr((prevDice) => {
@@ -52,7 +58,6 @@ useEffect(() => {
       }, 0)
   if(sumHeld === 10){
       setTenzies(true);
-      console.log("you won")
   }
   }, [dieArr])
 
@@ -77,6 +82,7 @@ useEffect(() => {
           className='bg-custom-3 rounded-lg px-14 mt-20 py-4 font-semibold text-xl text-white  active:shadow-inner'>
             {tenzies ? "Play again?" : "Roll"}
         </button>
+        <h2 className='pt-8 text-xl'>Number of Rolls: {numRolls}</h2>
       </div>
     </main>
   )
